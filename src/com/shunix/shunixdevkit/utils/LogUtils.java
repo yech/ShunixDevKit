@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.PrintStream;
 
 import android.content.Context;
-import android.os.Environment;
 
 /**
  * 
@@ -21,16 +20,8 @@ public class LogUtils {
 	private static final String INFO_TAG = "debug_log.log";
 	private static final String WARN_TAG = "warn_log.log";
 
-	private boolean isExternalStorageAvailable() {
-		String state = Environment.getExternalStorageState();
-		if (state.equals(Environment.MEDIA_MOUNTED)) {
-			return true;
-		}
-		return false;
-	}
-
 	public LogUtils(Context context) {
-		if (isExternalStorageAvailable()) {
+		if (FileUtils.isExternalStorageAvailable()) {
 			logFileDir = context.getExternalFilesDir(null);
 		} else {
 			logFileDir = context.getFilesDir();
