@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
  * 
  * @author Ray WANG
  * @since Dec 22nd, 2013
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class CacheManager {
 	private static CacheManager cacheManager = null;
