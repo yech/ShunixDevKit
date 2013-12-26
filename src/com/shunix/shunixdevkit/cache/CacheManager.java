@@ -35,27 +35,37 @@ public class CacheManager {
 			Class<?> c = cachable.getClass();
 			Field[] fields = c.getDeclaredFields();
 			String sqlField = "";
-			sqlField.substring(0, sqlField.length() - 1);
 			if (!isTableExist(cachable.getName())) {
 				for (Field field : fields) {
+					boolean originalState = field.isAccessible();
+					field.setAccessible(true);
 					sqlField += field.getName() + " TEXT,";
+					field.setAccessible(originalState);
 				}
+				sqlField = sqlField.substring(0, sqlField.length() - 1);
 				database = cacheHelper.getWritableDatabase();
 				String sqlCmd = "CREATE TABLE " + cachable.getName() + " ("
 						+ sqlField + ");";
 				database.execSQL(sqlCmd);
 			}
 			for (Field field : fields) {
+				boolean originalState = field.isAccessible();
+				field.setAccessible(true);
 				ContentValues cValues = new ContentValues();
 				cValues.put(field.getName(), (String) field.get(cachable));
 				database.insert(cachable.getName(), null, cValues);
+				field.setAccessible(originalState);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			database.close();
+			if (database.isOpen()) {
+				database.close();
+			}
 			return false;
 		}
-		database.close();
+		if (database.isOpen()) {
+			database.close();
+		}
 		return true;
 	}
 
@@ -75,7 +85,7 @@ public class CacheManager {
 		Cursor cursor = null;
 		database = cacheHelper.getReadableDatabase();
 		try {
-			String sqlCmd = "SELECT COUNT(*) AS c FORM sqlite_master WHERE type='table' and name='"
+			String sqlCmd = "SELECT COUNT(*) AS c FROM sqlite_master WHERE type='table' and name='"
 					+ name.trim() + "';";
 			cursor = database.rawQuery(sqlCmd, null);
 			if (cursor.moveToNext()) {
@@ -86,10 +96,14 @@ public class CacheManager {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			database.close();
+			if (database.isOpen()) {
+				database.close();
+			}
 			return false;
 		}
-		database.close();
+		if (database.isOpen()) {
+			database.close();
+		}
 		return false;
 	}
 

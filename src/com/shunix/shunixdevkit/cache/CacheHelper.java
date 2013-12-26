@@ -23,7 +23,7 @@ public class CacheHelper extends SQLiteOpenHelper {
 	}
 
 	public CacheHelper(Activity activity) {
-		this(activity, activity.getPackageName(), null, DATABASE_VERSION);
+		this(activity, activity.getClass().getName(), null, DATABASE_VERSION);
 	}
 
 	@Override
