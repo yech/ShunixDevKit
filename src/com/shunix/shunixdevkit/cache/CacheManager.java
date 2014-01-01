@@ -60,8 +60,8 @@ public class CacheManager {
 			e.printStackTrace();
 			return false;
 		} finally {
-            closeDatabase();
-        }
+      closeDatabase();
+    }
 		return true;
 	}
 
@@ -90,14 +90,14 @@ public class CacheManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-            closeDatabase();
-        }
+      closeDatabase();
+    }
 		return false;
 	}
 
     private void closeDatabase() {
-        if (database != null && database.isOpen()) {
-            database.close();
-        }
+      if (database != null && database.isOpen()) {
+        database.close();
+      }
     }
 }
