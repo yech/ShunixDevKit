@@ -62,7 +62,7 @@ public class CacheManager {
 		} finally {
       closeDatabase();
     }
-		return true;
+    return true;
 	}
 
 	public String get(Cachable cachable, String name, String selectionName,
@@ -85,7 +85,7 @@ public class CacheManager {
 					+ name.trim() + "';";
 			cursor = database.rawQuery(sqlCmd, null);
 			if (cursor.moveToNext()) {
-				return cursor.getInt(0)>0;
+				return cursor.getInt(0) > 0;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,9 +95,10 @@ public class CacheManager {
 		return false;
 	}
 
-    private void closeDatabase() {
-      if (database != null && database.isOpen()) {
-        database.close();
-      }
+  private void closeDatabase() {
+    if (database != null && database.isOpen()) {
+      database.close();
     }
+  }
+
 }
